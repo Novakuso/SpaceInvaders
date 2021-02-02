@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SpaceInvadors extends Application {
+public class SpaceInvaders extends Application {
 
     public static final int FRAMES = 144;
     public static final double WIDTH = 400;
@@ -27,47 +27,56 @@ public class SpaceInvadors extends Application {
     public static Scene scene;
     public static Image player = new Image("images/player.png", 75, 50, false, false);
     public static Image lifeImage;
+
     public static boolean shotIsAvailable = true;
     public static boolean isShot = false;
     public static boolean playerCanShoot = true;
     public static int currentShotImage = 0;
     public static int countShot = 0;
+
     public static int randomShotImage;
     public static double shotReloadSpeed;
     public static double shotSpeed;
     public static int maxShots;
+
     public static boolean objectCanSpawn = true;
     public static int currentObjectImage = 0;
     public static boolean isSpawned = false;
     public static boolean objectIsAvailable = true;
     public static int countObject = 0;
+
     public static int randomObjectImage;
     public static double objectSpeed;
     public static int maxObjects;
     public static double objectReloadSpeed;
+
     public static int removeSpeed = 3;
     public static int countRemove = 0;
     public static int counterObjectsUsed = 0;
     public static int counterShotsUsed = 0;
     public static int score = 0;
-    public static int currentLevel = 0;
     public static int maxLives = 5;
     public static int lifeToRemove = maxLives - 1;
+
     public static double playerX = WIDTH / 2 - player.getRequestedWidth() / 2;
     public static double playerY = HEIGHT - 100;
+
     static Label labelScore = new Label();
     static List<Boolean> eventInputs;
     static List<Boolean> playerCanMoveDir;
+
     static List<Image> shotImages;
     static List<Double> shotX;
     static List<Double> shotY;
     static List<Integer> currentShot;
     static List<Boolean> shotIsUsed;
+
     static List<Image> objectImages;
     static List<Double> objectX;
     static List<Double> objectY;
     static List<Integer> currentObject;
     static List<Boolean> objectIsUsed;
+
     static List<Double> lifeX;
     static List<Double> lifeY;
     static List<Boolean> lifeIsUsed;
@@ -91,7 +100,6 @@ public class SpaceInvadors extends Application {
         lifeX = new ArrayList<>();
         lifeY = new ArrayList<>();
         lifeIsUsed = new ArrayList<>();
-
     }
 
     public static void loadImages() {
@@ -244,9 +252,7 @@ public class SpaceInvadors extends Application {
 
             if (currentShotImage == maxShots - 1) {
                 currentShotImage = 0;
-                shoot();
-            }
-            if (shotIsUsed.get(currentShotImage) && currentShotImage < maxShots - 1) {
+            } else if (shotIsUsed.get(currentShotImage) && currentShotImage < maxShots - 1) {
                 currentShotImage++;
             }
             playerCanShoot = false;
@@ -278,30 +284,6 @@ public class SpaceInvadors extends Application {
                 shotY.set(i, shotY.get(i) - shotSpeed);
             }
         }
-    }
-
-    public static boolean shootNew(int level) {
-
-        if ((eventInputs.get(4) || eventInputs.get(5)) && shotIsAvailable && playerCanShoot && !shotIsUsed.get(currentShotImage)) {
-            randomShotImage = RANDOM.nextInt(shotImages.size());
-
-            shotX.set(currentShotImage, playerX + player.getRequestedWidth() / 2 - 5 + (level * 25));
-            shotY.set(currentShotImage, playerY - player.getRequestedHeight() / 2 + 2);
-
-            currentShot.set(currentShotImage, randomShotImage);
-            shotIsUsed.set(currentShotImage, true);
-
-            if (currentShotImage == maxShots - 1) {
-                currentShotImage = 0;
-            } else if (shotIsUsed.get(currentShotImage) && currentShotImage < maxShots - 1) {
-                currentShotImage++;
-            }
-
-            playerCanShoot = false;
-            shotIsAvailable = false;
-            isShot = true;
-            return true;
-        } else return false;
     }
 
     public static boolean spawnObject() {
@@ -351,12 +333,7 @@ public class SpaceInvadors extends Application {
                             objectReloadSpeed = objectReloadSpeed / 2 + objectReloadSpeed / 3.75;
                             shotReloadSpeed = shotReloadSpeed / 2 + shotReloadSpeed / 2.75;
                         }
-                        //if(score == 10){
-                        //    currentLevel++;
-                        //}
-                        //if(score == 20){
-                        //    currentLevel++;
-                        //}
+
                         labelScore.setText("Score: " + score);
                     }
                 }
@@ -390,18 +367,6 @@ public class SpaceInvadors extends Application {
         System.out.println("game over");
     }
 
-    public static void drawShot(int currentLevel) {
-        if (shootNew(currentLevel) || isShot) {
-            for (int i = 0; i < maxShots; i++) {
-                if (shotIsUsed.get(i)) {
-                    gc.drawImage(shotImages.get(currentShot.get(i)), shotX.get(i), shotY.get(i));
-                }
-            }
-        }
-        checkShot();
-        moveShots();
-    }
-
     public static void drawImages(GraphicsContext gc) {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         gc.drawImage(player, playerX, playerY);
@@ -412,42 +377,8 @@ public class SpaceInvadors extends Application {
                 gc.drawImage(lifeImage, lifeX.get(i), lifeY.get(i));
             }
         }
-        //shotSpeed = 1.5;
 
-        //if(shoot() || isShot) {
-        //    for(int i = 0; i < maxShots; i++){
-        //        if(shotIsUsed.get(i)) {
-        //            gc.drawImage(shotImages.get(currentShot.get(i)), shotX.get(i), shotY.get(i));
-        //        }
-        //    }
-        //        checkShot();
-        //        moveShots();
-        //}
-        //if(currentLevel == 0){
-        //    drawShot(currentLevel);
-        //}
-        //if(currentLevel == 1){
-        //    shotSpeed = 3;
-        //    drawShot(currentLevel);
-        //    drawShot(currentLevel - 2);
-        //}
-        //if(currentLevel == 2){
-        //    drawShot(currentLevel - 3);
-        //    drawShot(currentLevel - 2);
-        //    drawShot(currentLevel - 1);
-        //}
-
-
-        //if (shootNew(currentLevel) || isShot) {
-        //    for (int i = 0; i < maxShots; i++) {
-        //        if (shotIsUsed.get(i)) {
-        //            gc.drawImage(shotImages.get(currentShot.get(i)), shotX.get(i), shotY.get(i));
-        //        }
-        //    }
-        //    checkShot();
-        //    moveShots();
-        //}
-        if (shootNew(currentLevel) || isShot) {
+        if (shoot() || isShot) {
             for (int i = 0; i < maxShots; i++) {
                 if (shotIsUsed.get(i)) {
                     gc.drawImage(shotImages.get(currentShot.get(i)), shotX.get(i), shotY.get(i));
@@ -476,7 +407,7 @@ public class SpaceInvadors extends Application {
 
     @Override
     public void start(Stage Stage) throws Exception {
-        root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/game.fxml"));
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);

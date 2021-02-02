@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<Pane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity"
+      prefHeight="550.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1">
+   <Label fx:id="labelScore" text="Score: 0" textFill="WHITE">
+      <font>
+         <Font size="22.0"/>
+      </font>
+   </Label>
+</Pane>
