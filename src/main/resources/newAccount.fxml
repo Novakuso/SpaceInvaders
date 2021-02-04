@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.*?>
+<Pane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0"
+      style="-fx-background-color: #242528;" xmlns="http://javafx.com/javafx/11.0.1"
+      fx:controller="de.novakuso.spaceinvadors.ControllerNewAccount">
+   <Label fx:id="labelCreateNewAccount" alignment="CENTER" layoutX="50.0" layoutY="14.0" prefHeight="80.0"
+          prefWidth="300.0" style="-fx-border-color: #bc2626; -fx-border-width: 3px 3px 3px 3px;"
+          text="Create New Account" textFill="#bc2626">
+      <font>
+         <Font size="30.0"/>
+      </font>
+   </Label>
+   <Label fx:id="labelUsername" layoutX="102.0" layoutY="160.0" prefHeight="30.0" prefWidth="75.0" text="Username:"
+          textFill="#bc2626">
+      <font>
+         <Font size="15.0"/>
+      </font>
+   </Label>
+   <Label fx:id="labelPassword" layoutX="102.0" layoutY="225.0" prefHeight="30.0" prefWidth="75.0" text="Password:"
+          textFill="#bc2626">
+      <font>
+         <Font size="15.0"/>
+      </font>
+   </Label>
+   <Label fx:id="labelPasswordRepeat" layoutX="57.0" layoutY="289.0" prefHeight="30.0" prefWidth="120.0"
+          text="Repeat password:" textFill="#bc2626">
+      <font>
+         <Font size="15.0"/>
+      </font>
+   </Label>
+   <TextField fx:id="username" layoutX="187.0" layoutY="163.0" promptText="Enter username"
+              style="-fx-background-color: transparent; -fx-border-color: #bc2626;"/>
+   <Button fx:id="buttonCreate" alignment="CENTER" layoutX="224.0" layoutY="369.0" mnemonicParsing="false"
+           onAction="#create" prefHeight="44.0" prefWidth="114.0" style="-fx-background-color: #bc2626;" text="Create">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Button>
+   <Button fx:id="buttonCancel" alignment="CENTER" layoutX="86.0" layoutY="369.0" mnemonicParsing="false"
+           onAction="#cancel" prefHeight="44.0" prefWidth="114.0" style="-fx-background-color: #bc2626;" text="Cancel">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Button>
+   <Label fx:id="passwordsWrong" alignment="CENTER" layoutX="171.0" layoutY="326.0" prefHeight="17.0" prefWidth="167.0"
+          text="passwords do not match!" textFill="#bc2626" visible="false"/>
+   <PasswordField fx:id="password" layoutX="187.0" layoutY="227.0" promptText="Enter password"
+                  style="-fx-background-color: transparent; -fx-border-color: #bc2626;"/>
+   <PasswordField fx:id="passwordRepeat" layoutX="187.0" layoutY="290.0" promptText="Repeat password"
+                  style="-fx-background-color: transparent; -fx-border-color: #bc2626;"/>
+</Pane>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.*?>
+<Pane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: #242528;"
+      xmlns="http://javafx.com/javafx/11.0.1" fx:controller="de.novakuso.spaceinvadors.ControllerLogin">
+   <Label fx:id="labelLogin" alignment="CENTER" layoutX="119.0" layoutY="14.0" prefHeight="61.0" prefWidth="163.0"
+          style="-fx-border-color: #bc2626; -fx-border-width: 2px 2px 2px 2px;" text="Log In" textFill="#bc2626">
+      <font>
+         <Font size="30.0"/>
+      </font>
+   </Label>
+   <Label fx:id="labelUsername" layoutX="58.0" layoutY="134.0" prefHeight="31.0" prefWidth="97.0" text="Username:"
+          textFill="#bc2626">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Label>
+   <Label layoutX="58.0" layoutY="193.0" text="Password:" textFill="#bc2626">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Label>
+   <TextField fx:id="textFieldUsername" layoutX="176.0" layoutY="137.0" promptText="Enter your username"
+              style="-fx-background-color: transparent; -fx-border-color: #bc2626;"/>
+   <Label fx:id="wrongCredentials" layoutX="176.0" layoutY="232.0" text="Invalid username or password!"
+          textFill="#bc2626" visible="false"/>
+   <Button fx:id="buttonLogin" alignment="CENTER" layoutX="266.0" layoutY="325.0" mnemonicParsing="false"
+           onAction="#login" prefHeight="44.0" prefWidth="108.0" style="-fx-background-color: #bc2626;" text="Log in">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Button>
+   <Button fx:id="buttonCancel" alignment="CENTER" layoutX="25.0" layoutY="325.0" mnemonicParsing="false"
+           onAction="#cancel" prefHeight="44.0" prefWidth="108.0" style="-fx-background-color: #bc2626;" text="Cancel">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Button>
+   <Button fx:id="buttonSignUp" alignment="CENTER" layoutX="146.0" layoutY="325.0" mnemonicParsing="false"
+           onAction="#signUp" prefHeight="44.0" prefWidth="108.0" style="-fx-background-color: #bc2626;" text="Sign Up">
+      <font>
+         <Font size="20.0"/>
+      </font>
+   </Button>
+   <PasswordField fx:id="passwordFieldPassword" layoutX="176.0" layoutY="194.0" promptText="Enter your password"
+                  style="-fx-background-color: transparent; -fx-border-color: #bc2626;"/>
+</Pane>

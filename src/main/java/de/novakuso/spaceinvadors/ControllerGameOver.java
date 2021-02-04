@@ -8,11 +8,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class ControllerGameOver {
+
+    Stage spaceInvader;
+    Stage gameOver;
 
     @FXML
     public static Pane pane;
-
     @FXML
     public static VBox vbox;
     @FXML
@@ -36,10 +40,7 @@ public class ControllerGameOver {
     @FXML
     public Label highscore;
 
-    public void playAgain(ActionEvent event) {
-        Stage gameOver = (Stage) highscore.getScene().getWindow();
-        gameOver.close();
-
+    public static void resetGame() throws IOException {
         SpaceInvaders.gameIsOver = false;
         SpaceInvaders.gameOverScreenLoaded = false;
         SpaceInvaders.score = 0;
@@ -47,7 +48,6 @@ public class ControllerGameOver {
         SpaceInvaders.lifeToRemove = SpaceInvaders.maxLives - 1;
         SpaceInvaders.playerX = SpaceInvaders.WIDTH / 2 - SpaceInvaders.player.getRequestedWidth() / 2;
         SpaceInvaders.playerY = SpaceInvaders.HEIGHT - 50 - SpaceInvaders.player.getRequestedHeight();
-
         SpaceInvaders.shotSpeed = 5.5;
         SpaceInvaders.objectSpeed = 2.5;
         SpaceInvaders.shotReloadSpeed = 20;
@@ -59,24 +59,38 @@ public class ControllerGameOver {
         //change level
     }
 
+    public void playAgain(ActionEvent event) throws Exception {
+        gameOver = (Stage) highscore.getScene().getWindow();
+        gameOver.close();
+        spaceInvader = (Stage) SpaceInvaders.labelScore.getScene().getWindow();
+        spaceInvader.close();
+        resetGame();
+        SpaceInvaders.loadGame();
+    }
+
     @FXML
     public void fuckThisGame(ActionEvent event) {
-        Stage spaceInvader = (Stage) SpaceInvaders.labelScore.getScene().getWindow();
+        spaceInvader = (Stage) SpaceInvaders.labelScore.getScene().getWindow();
         spaceInvader.close();
-        Stage gameOver = (Stage) highscore.getScene().getWindow();
+        gameOver = (Stage) highscore.getScene().getWindow();
         gameOver.close();
     }
 
     @FXML
-    public void logout(ActionEvent event) {
-        //logout of your account
+    public void logout(ActionEvent event) throws IOException {
+        spaceInvader = (Stage) SpaceInvaders.labelScore.getScene().getWindow();
+        spaceInvader.close();
+        gameOver = (Stage) highscore.getScene().getWindow();
+        gameOver.close();
+        resetGame();
+        Login.loadScreen("login");
     }
 
     @FXML
     public void exit(ActionEvent event) {
-        Stage spaceInvader = (Stage) SpaceInvaders.labelScore.getScene().getWindow();
+        spaceInvader = (Stage) SpaceInvaders.labelScore.getScene().getWindow();
         spaceInvader.close();
-        Stage gameOver = (Stage) highscore.getScene().getWindow();
+        gameOver = (Stage) highscore.getScene().getWindow();
         gameOver.close();
     }
 }

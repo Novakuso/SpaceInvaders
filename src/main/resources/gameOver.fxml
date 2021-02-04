@@ -7,81 +7,79 @@
 <Pane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
       minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: #242528;"
       xmlns="http://javafx.com/javafx/8" fx:controller="de.novakuso.spaceinvadors.ControllerGameOver">
-   <children>
-      <Label fx:id="labelGameOver" alignment="CENTER" layoutX="139.0" layoutY="14.0" prefHeight="82.0" prefWidth="241.0"
-             style="-fx-border-color: #bc2626; -fx-border-width: 2px 2px 2px 2px; -fx-background-color: black;"
-             text="GAME OVER" textFill="#bc2626">
-         <font>
-            <Font size="40.0"/>
-         </font>
-      </Label>
-      <Label fx:id="labelScore" alignment="CENTER" layoutX="139.0" layoutY="129.0" prefHeight="55.0" prefWidth="103.0"
-             style="-fx-background-color: #bc2626; -fx-border-color: black; -fx-border-width: 2px 2px 2px 2px;"
-             text="Score:">
-         <font>
-            <Font size="30.0"/>
-         </font>
-      </Label>
-      <Label fx:id="labelHighscore" alignment="CENTER" layoutX="139.0" layoutY="200.0" prefHeight="55.0"
-             prefWidth="134.0"
-             style="-fx-background-color: black; -fx-border-width: 2px 2px 2px 2px; -fx-border-color: #bc2626;"
-             text="Highscore:" textFill="#bc2626">
-         <font>
-            <Font size="25.0"/>
-         </font>
-      </Label>
-      <VBox fx:id="vbox" prefHeight="550.0" prefWidth="125.0"
-            style="-fx-background-color: #bc2626; -fx-border-color: black; -fx-border-width: 0px 3px 0px 0px;">
-         <children>
-            <Button fx:id="buttonPlayAgain" alignment="CENTER" mnemonicParsing="false" onAction="#playAgain"
-                    prefHeight="70.0" prefWidth="125.0"
-                    style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 0px 0px 0px 0px;"
-                    text="Play Again">
-               <font>
-                  <Font size="20.0"/>
-               </font>
-            </Button>
-            <Button fx:id="buttonChangeLevel" alignment="CENTER" mnemonicParsing="false" onAction="#changeLevel"
-                    prefHeight="70.0" prefWidth="125.0"
-                    style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 1px 0px 0px 0px;"
-                    text="Levels">
-               <font>
-                  <Font size="20.0"/>
-               </font>
-            </Button>
-            <Button fx:id="buttonFuckThisGame" alignment="CENTER" mnemonicParsing="false" onAction="#fuckThisGame"
-                    prefHeight="70.0" prefWidth="125.0"
-                    style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 1px 0px 1px 0px;"
-                    text="Fuck this game"/>
-            <Button fx:id="buttonLogout" alignment="CENTER" mnemonicParsing="false" onAction="#logout" prefHeight="70.0"
-                    prefWidth="125.0"
-                    style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 0px 0px 1px 0px;"
-                    text="Logout">
-               <font>
-                  <Font size="20.0"/>
-               </font>
-            </Button>
-            <Button fx:id="buttonExit" alignment="CENTER" mnemonicParsing="false" onAction="#exit" prefHeight="70.0"
-                    prefWidth="125.0"
-                    style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 0px 0px 1px 0px;"
-                    text="Exit">
-               <font>
-                  <Font size="20.0"/>
-               </font>
-            </Button>
-         </children>
-      </VBox>
-      <Label fx:id="score" layoutX="260.0" layoutY="129.0" prefHeight="55.0" prefWidth="122.0" text="0"
-             textFill="#bc2626">
-         <font>
-            <Font size="30.0"/>
-         </font>
-      </Label>
-      <Label fx:id="highscore" layoutX="287.0" layoutY="200.0" prefHeight="55.0" prefWidth="97.0" text="0"
-             textFill="#bc2626">
-         <font>
-            <Font size="30.0"/>
-         </font>
-      </Label>
-   </children>
+   <Label fx:id="labelGameOver" alignment="CENTER" layoutX="139.0" layoutY="14.0" prefHeight="82.0" prefWidth="241.0"
+          style="-fx-border-color: #bc2626; -fx-border-width: 2px 2px 2px 2px; -fx-background-color: black;"
+          text="GAME OVER" textFill="#bc2626">
+      <font>
+         <Font size="40.0"/>
+      </font>
+   </Label>
+   <Label fx:id="labelScore" alignment="CENTER" layoutX="139.0" layoutY="129.0" prefHeight="55.0" prefWidth="103.0"
+          style="-fx-background-color: #bc2626; -fx-border-color: black; -fx-border-width: 2px 2px 2px 2px;"
+          text="Score:">
+      <font>
+         <Font size="30.0"/>
+      </font>
+   </Label>
+   <Label fx:id="labelHighscore" alignment="CENTER" layoutX="139.0" layoutY="200.0" prefHeight="55.0"
+          prefWidth="134.0"
+          style="-fx-background-color: black; -fx-border-width: 2px 2px 2px 2px; -fx-border-color: #bc2626;"
+          text="Highscore:" textFill="#bc2626">
+      <font>
+         <Font size="25.0"/>
+      </font>
+   </Label>
+   <VBox fx:id="vbox" prefHeight="550.0" prefWidth="125.0"
+         style="-fx-background-color: #bc2626; -fx-border-color: black; -fx-border-width: 0px 3px 0px 0px;">
+      <children>
+         <Button fx:id="buttonPlayAgain" alignment="CENTER" mnemonicParsing="false" onAction="#playAgain"
+                 prefHeight="70.0" prefWidth="125.0"
+                 style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 0px 0px 0px 0px;"
+                 text="Play Again">
+            <font>
+               <Font size="20.0"/>
+            </font>
+         </Button>
+         <Button fx:id="buttonChangeLevel" alignment="CENTER" mnemonicParsing="false" onAction="#changeLevel"
+                 prefHeight="70.0" prefWidth="125.0"
+                 style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 1px 0px 0px 0px;"
+                 text="Levels">
+            <font>
+               <Font size="20.0"/>
+            </font>
+         </Button>
+         <Button fx:id="buttonFuckThisGame" alignment="CENTER" mnemonicParsing="false" onAction="#fuckThisGame"
+                 prefHeight="70.0" prefWidth="125.0"
+                 style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 1px 0px 1px 0px;"
+                 text="Fuck this game"/>
+         <Button fx:id="buttonLogout" alignment="CENTER" mnemonicParsing="false" onAction="#logout" prefHeight="70.0"
+                 prefWidth="125.0"
+                 style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 0px 0px 1px 0px;"
+                 text="Logout">
+            <font>
+               <Font size="20.0"/>
+            </font>
+         </Button>
+         <Button fx:id="buttonExit" alignment="CENTER" mnemonicParsing="false" onAction="#exit" prefHeight="70.0"
+                 prefWidth="125.0"
+                 style="-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 0px 0px 1px 0px;"
+                 text="Exit">
+            <font>
+               <Font size="20.0"/>
+            </font>
+         </Button>
+      </children>
+   </VBox>
+   <Label fx:id="score" layoutX="260.0" layoutY="129.0" prefHeight="55.0" prefWidth="122.0" text="0"
+          textFill="#bc2626">
+      <font>
+         <Font size="30.0"/>
+      </font>
+   </Label>
+   <Label fx:id="highscore" layoutX="287.0" layoutY="200.0" prefHeight="55.0" prefWidth="97.0" text="0"
+          textFill="#bc2626">
+      <font>
+         <Font size="30.0"/>
+      </font>
+   </Label>
 </Pane>

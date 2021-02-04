@@ -1,8 +1,8 @@
 package de.novakuso.spaceinvadors;
 
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class SpaceInvaders extends Application {
+public class SpaceInvaders {
 
     public static final int FRAMES = 144;
     public static final double WIDTH = 400;
@@ -480,18 +480,10 @@ public class SpaceInvaders extends Application {
     public static void gameOver() throws IOException {
         System.out.println("game over");
         labelScore.setText("Score: 0");
-
-        FXMLLoader loader = new FXMLLoader(ControllerGameOver.class.getResource("/gameOver.fxml"));
-        Pane pane = loader.load();
+        FXMLLoader loader = Login.loadScreen("gameOver");
         ControllerGameOver gameOver = loader.getController();
-        Scene scene = new Scene(pane);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.show();
-
         gameOver.score.setText("" + score);
         gameOver.highscore.setText("" + highscore);
-
         gameOverScreenLoaded = true;
     }
 
@@ -528,13 +520,19 @@ public class SpaceInvaders extends Application {
         }
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    //setup
+    public static void setup() {
+        setupArrays();
+        setupVars();
+        loadImages();
+        addArrayIndexes();
+        setArrayData();
+        setupImages();
+        spawnObject();
     }
 
-    @Override
-    public void start(Stage Stage) throws Exception {
-        root = FXMLLoader.load(getClass().getResource("/game.fxml"));
+    public static void start(Stage Stage) throws Exception {
+        root = FXMLLoader.load(SpaceInvaders.class.getResource("/game.fxml"));
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
@@ -552,6 +550,8 @@ public class SpaceInvaders extends Application {
 
             @Override
             public void handle(long now) {
+                start();
+                stop();
                 if (last_tick == 0) {
                     last_tick = now;
                     try {
@@ -570,21 +570,34 @@ public class SpaceInvaders extends Application {
                     }
                 }
             }
+
+            @Override
+            public void start() {
+                if (!gameIsOver) {
+                    super.start();
+                }
+            }
+
+            @Override
+            public void stop() {
+                if (gameIsOver) {
+                    super.stop();
+                }
+            }
         }.start();
+
 
         Stage.setTitle("Space Invaders");
         Stage.setScene(scene);
         Stage.show();
     }
 
-    //setup
-    public void setup() {
-        setupArrays();
-        setupVars();
-        loadImages();
-        addArrayIndexes();
-        setArrayData();
-        setupImages();
-        spawnObject();
+    public static void loadGame() throws Exception {
+        Parent parent = FXMLLoader.load(ControllerGame.class.getResource("/game.fxml"));
+        Scene scene = new Scene(parent);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
+        SpaceInvaders.start(stage);
     }
 }
