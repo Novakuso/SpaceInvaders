@@ -11,12 +11,15 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SpaceInvaders {
+    public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     public static final int FRAMES = 144;
     public static final double WIDTH = 400;
@@ -42,7 +45,7 @@ public class SpaceInvaders {
     public static int randomShotImage;
     public static double shotReloadSpeed;
     public static double shotSpeed;
-    public static int maxShots;
+    public static double maxShots;
 
     public static boolean objectCanSpawn = true;
     public static int currentObjectImage = 0;
@@ -52,7 +55,7 @@ public class SpaceInvaders {
 
     public static int randomObjectImage;
     public static double objectSpeed;
-    public static int maxObjects;
+    public static double maxObjects;
     public static double objectReloadSpeed;
 
     public static int removeSpeed = 3;
@@ -86,6 +89,7 @@ public class SpaceInvaders {
     static List<Double> lifeX;
     static List<Double> lifeY;
     static List<Boolean> lifeIsUsed;
+
 
     //setup arrays
     public static void setupArrays() {
@@ -183,17 +187,6 @@ public class SpaceInvaders {
     //setup images
     public static void setupImages() {
         gc.drawImage(player, playerX, playerY);
-    }
-
-    //setup variables
-    public static void setupVars() {
-        shotReloadSpeed = 20;
-        shotSpeed = 5.5;
-        maxShots = 20;
-
-        objectSpeed = 2.5;
-        objectReloadSpeed = 50;
-        maxObjects = 10;
     }
 
     //handle user inputs
@@ -445,7 +438,8 @@ public class SpaceInvaders {
 
                         if (score % 15 == 0 && score <= 100) {
                             objectReloadSpeed = objectReloadSpeed / 2 + objectReloadSpeed / 3.75;
-                            shotReloadSpeed = shotReloadSpeed / 2 + shotReloadSpeed / 2.75;
+                            shotReloadSpeed = shotReloadSpeed / 2 + shotReloadSpeed / 2.5;
+                            objectSpeed = objectSpeed * 1.05;
                         }
                         if (score >= highscore) {
                             highscore = score;
@@ -523,7 +517,7 @@ public class SpaceInvaders {
     //setup
     public static void setup() {
         setupArrays();
-        setupVars();
+        readJson();
         loadImages();
         addArrayIndexes();
         setArrayData();
@@ -591,6 +585,83 @@ public class SpaceInvaders {
         Stage.setScene(scene);
         Stage.show();
     }
+
+
+    public static void readJson() {
+        try {
+            List<Object> data = Util.JSON_LIST_ADAPTER.fromJson(readResource("/levels.json"));
+            for (Object object : data) {
+
+                Level level = Util.LEVEL_ADAPTER.fromJsonValue(object);
+                System.out.println(level);
+
+
+                assert level != null;
+                if (data.indexOf(object) == 0) {
+                    Level.level0.put("maxObjects", level.getMaxObjects());
+                    Level.level0.put("maxShots", level.getMaxShots());
+                    Level.level0.put("objectSpeed", level.getObjectSpeed());
+                    Level.level0.put("shotSpeed", level.getShotSpeed());
+                    Level.level0.put("objectReloadSpeed", level.getObjectReloadSpeed());
+                    Level.level0.put("shotReloadSpeed", level.getShotReloadSpeed());
+                }
+
+                if (data.indexOf(object) == 1) {
+                    Level.level1.put("maxObjects", level.getMaxObjects());
+                    Level.level1.put("maxShots", level.getMaxShots());
+                    Level.level1.put("objectSpeed", level.getObjectSpeed());
+                    Level.level1.put("shotSpeed", level.getShotSpeed());
+                    Level.level1.put("objectReloadSpeed", level.getObjectReloadSpeed());
+                    Level.level1.put("shotReloadSpeed", level.getShotReloadSpeed());
+                }
+
+                if (data.indexOf(object) == 2) {
+                    Level.level2.put("maxObjects", level.getMaxObjects());
+                    Level.level2.put("maxShots", level.getMaxShots());
+                    Level.level2.put("objectSpeed", level.getObjectSpeed());
+                    Level.level2.put("shotSpeed", level.getShotSpeed());
+                    Level.level2.put("objectReloadSpeed", level.getObjectReloadSpeed());
+                    Level.level2.put("shotReloadSpeed", level.getShotReloadSpeed());
+                }
+
+                if (data.indexOf(object) == 3) {
+                    Level.level3.put("maxObjects", level.getMaxObjects());
+                    Level.level3.put("maxShots", level.getMaxShots());
+                    Level.level3.put("objectSpeed", level.getObjectSpeed());
+                    Level.level3.put("shotSpeed", level.getShotSpeed());
+                    Level.level3.put("objectReloadSpeed", level.getObjectReloadSpeed());
+                    Level.level3.put("shotReloadSpeed", level.getShotReloadSpeed());
+                }
+            }
+            loadLevels(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadLevels(int level) {
+        Level.setUpLevelArray();
+        maxObjects = (double) Level.Levels.get(level).get("maxObjects");
+        maxShots = (double) Level.Levels.get(level).get("maxShots");
+        objectSpeed = (double) Level.Levels.get(level).get("objectSpeed");
+        shotSpeed = (double) Level.Levels.get(level).get("shotSpeed");
+        objectReloadSpeed = (double) Level.Levels.get(level).get("objectReloadSpeed");
+        shotReloadSpeed = (double) Level.Levels.get(level).get("shotReloadSpeed");
+    }
+
+    public static String readResource(String name) throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(SpaceInvaders.class.getResourceAsStream(name)));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            stringBuilder.append(line);
+            stringBuilder.append(LINE_SEPARATOR);
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        reader.close();
+        return stringBuilder.toString();
+    }
+
 
     public static void loadGame() throws Exception {
         Parent parent = FXMLLoader.load(ControllerGame.class.getResource("/game.fxml"));
