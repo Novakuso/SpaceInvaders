@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0"
+            style="-fx-background-color: #242528;" xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="de.novakuso.spaceinvadors.ControllerProfile">
+   <left>
+      <VBox fx:id="vBox" prefHeight="550.0" prefWidth="125.0" style="-fx-background-color: #bc2626;"
+            BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="buttonHome" alignment="CENTER" mnemonicParsing="false" onAction="#goHome" prefHeight="70.0"
+                    prefWidth="125.0"
+                    style="-fx-background-color: transparent; -fx-border-color: #242528; -fx-border-width: 0px 0px 1px 0px;"
+                    text="Home" textFill="#242528">
+               <font>
+                  <Font size="20.0"/>
+               </font>
+            </Button>
+            <Button fx:id="buttonLevel" alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
+                    onAction="#level" prefHeight="70.0" prefWidth="125.0"
+                    style="-fx-background-color: transparent; -fx-border-color: #242528; -fx-border-width: 0px 0px 1px 0px;"
+                    text="Levels" textFill="#242528">
+               <font>
+                  <Font size="20.0"/>
+               </font>
+            </Button>
+            <Button fx:id="buttonEdit" alignment="CENTER" layoutX="10.0" layoutY="80.0" mnemonicParsing="false"
+                    onAction="#edit" prefHeight="70.0" prefWidth="125.0"
+                    style="-fx-background-color: transparent; -fx-border-color: #242528; -fx-border-width: 0px 0px 1px 0px;"
+                    text="Edit Profile" textFill="#242528">
+               <font>
+                  <Font size="20.0"/>
+               </font>
+            </Button>
+            <Button fx:id="buttonSucks" alignment="CENTER" layoutX="10.0" layoutY="151.0" mnemonicParsing="false"
+                    onAction="#sucks" prefHeight="70.0" prefWidth="125.0"
+                    style="-fx-background-color: transparent; -fx-border-color: #242528; -fx-border-width: 0px 0px 1px 0px;"
+                    text="This Game Sucks" textFill="#242528">
+               <font>
+                  <Font size="13.0"/>
+               </font>
+            </Button>
+            <Button fx:id="buttonLogout" alignment="CENTER" layoutX="10.0" layoutY="221.0" mnemonicParsing="false"
+                    onAction="#logout" prefHeight="70.0" prefWidth="125.0"
+                    style="-fx-background-color: transparent; -fx-border-color: #242528; -fx-border-width: 0px 0px 1px 0px;"
+                    text="Logout" textFill="#242528">
+               <font>
+                  <Font size="20.0"/>
+               </font>
+            </Button>
+            <Button fx:id="buttonExit" alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
+                    onAction="#exit" prefHeight="70.0" prefWidth="125.0"
+                    style="-fx-background-color: transparent; -fx-border-color: #242528; -fx-border-width: 0px 0px 1px 0px;"
+                    text="Exit" textFill="#242528">
+               <font>
+                  <Font size="20.0"/>
+               </font>
+            </Button>
+            <Label fx:id="huso" text="HUSO" textFill="#bc2626"/>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <Pane fx:id="pane" prefHeight="550.0" prefWidth="375.0" style="-fx-background-color: #242528;"
+            BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="labelWelcomeBack" alignment="BASELINE_LEFT" layoutX="15.0" layoutY="15.0" prefHeight="30.0"
+                   prefWidth="245.0" text="Welcome back $s" textFill="#bc2626">
+               <font>
+                  <Font size="20.0"/>
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </center>
+</BorderPane>

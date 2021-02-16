@@ -50,6 +50,8 @@ public class ControllerNewAccount {
     void create(ActionEvent event) {
         if (password.getText().equals(passwordRepeat.getText())) {
             createNewAccount(username.getText(), password.getText());
+            Stage newAccount = (Stage) labelCreateNewAccount.getScene().getWindow();
+            newAccount.close();
         } else passwordsWrong.setVisible(true);
     }
 

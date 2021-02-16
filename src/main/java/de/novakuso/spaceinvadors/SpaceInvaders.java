@@ -31,6 +31,7 @@ public class SpaceInvaders {
     public static GraphicsContext gc;
     public static Scene scene;
     public static Image player = new Image("images/player.png", 75, 50, false, false);
+    public static Image coinImage = new Image("images/coin.png", 50, 50, false, false);
     public static Image lifeImage;
 
     public static boolean gameOverScreenLoaded = false;
@@ -67,8 +68,15 @@ public class SpaceInvaders {
     public static int maxLives = 5;
     public static int lifeToRemove = maxLives - 1;
 
+    public static int level;
+
     public static double playerX = WIDTH / 2 - player.getRequestedWidth() / 2;
     public static double playerY = HEIGHT - 50 - player.getRequestedHeight();
+
+    public static double coinX;
+    public static double coinY = -60;
+    public static boolean coinIsSpawned = false;
+    public static int currentCoin = -1;
 
     static Label labelScore = new Label();
     static List<Boolean> eventInputs;
@@ -89,6 +97,8 @@ public class SpaceInvaders {
     static List<Double> lifeX;
     static List<Double> lifeY;
     static List<Boolean> lifeIsUsed;
+
+    static List<Boolean> coinIsCollected;
 
 
     //setup arrays
@@ -111,6 +121,8 @@ public class SpaceInvaders {
         lifeX = new ArrayList<>();
         lifeY = new ArrayList<>();
         lifeIsUsed = new ArrayList<>();
+
+        coinIsCollected = new ArrayList<>();
     }
 
     //add null to all arrays
@@ -138,6 +150,10 @@ public class SpaceInvaders {
             lifeY.add(i, null);
             lifeIsUsed.add(i, null);
         }
+        for (int i = 0; i < 3; i++) {
+            coinIsCollected.add(i, null);
+            System.out.println(coinIsCollected.size());
+        }
     }
 
     //set array data
@@ -164,6 +180,10 @@ public class SpaceInvaders {
             lifeX.set(i, i * lifeImage.getRequestedWidth());
             lifeY.set(i, HEIGHT - lifeImage.getRequestedHeight());
             lifeIsUsed.set(i, true);
+        }
+        for (int i = 0; i < 3; i++) {
+            coinIsCollected.set(i, false);
+            System.out.println(i + " " + coinIsCollected.size());
         }
     }
 
@@ -444,6 +464,10 @@ public class SpaceInvaders {
                         if (score >= highscore) {
                             highscore = score;
                         }
+                        if (score % (level * 12) == 0 && score < ((level * 12 * 3) + 1)) {
+                            spawnCoin();
+                            currentCoin++;
+                        }
                         labelScore.setText("Score: " + score);
                     }
                 }
@@ -455,6 +479,40 @@ public class SpaceInvaders {
         }
     }
 
+    //spawn coins
+    public static boolean spawnCoin() {
+        //System.out.println("spawn");
+        coinX = RANDOM.nextDouble(WIDTH - coinImage.getRequestedWidth());
+        coinY = 1;
+        coinIsSpawned = true;
+        return true;
+    }
+
+    //move coins
+    public static void moveCoin() {
+        coinY = coinY + 1.3;
+        //System.out.println("move");
+    }
+
+    //check coins
+    public static void checkCoin() {
+        //System.out.println("check");
+        if (coinY > HEIGHT) {
+            coinIsSpawned = false;
+        }
+        for (int j = 0; j < maxShots; j++) {
+            if (shotX.get(j) > coinX && shotX.get(j) < coinX + objectImages.get(0).getRequestedWidth() && shotY.get(j) < coinY + coinImage.getRequestedHeight() && shotY.get(j) > coinY
+                    && shotX.get(j) + shotImages.get(0).getRequestedWidth() > coinX && shotX.get(j) + shotImages.get(0).getRequestedWidth() < coinX + coinImage.getRequestedWidth()) {
+                coinIsCollected.set(currentCoin, true);
+                System.out.println("currentCoin " + currentCoin + " coinIsCollected " + coinIsCollected.get(currentCoin));
+                for (int i = 0; i < coinIsCollected.size(); i++) {
+                    System.out.println("i " + i + " coinIsCollected " + coinIsCollected.get(i) + " currentCoin " + currentCoin);
+                }
+                coinIsSpawned = false;
+            }
+        }
+    }
+
     //remove lives
     public static void removeLife() throws IOException {
         if (lifeToRemove <= 0) {
@@ -462,7 +520,6 @@ public class SpaceInvaders {
             drawImages(gc);
             if (!gameOverScreenLoaded) {
                 gameOver();
-                gameIsOver = true;
             }
         } else {
             lifeIsUsed.set(lifeToRemove, false);
@@ -479,6 +536,7 @@ public class SpaceInvaders {
         gameOver.score.setText("" + score);
         gameOver.highscore.setText("" + highscore);
         gameOverScreenLoaded = true;
+        gameIsOver = true;
     }
 
     //draw all images
@@ -512,11 +570,17 @@ public class SpaceInvaders {
             checkObjects();
             moveObjects();
         }
+        if (coinIsSpawned) {
+            gc.drawImage(coinImage, coinX, coinY);
+            moveCoin();
+            checkCoin();
+        }
     }
 
     //setup
     public static void setup() {
         setupArrays();
+        level = ControllerLevel.level;
         readJson();
         loadImages();
         addArrayIndexes();
@@ -671,4 +735,5 @@ public class SpaceInvaders {
         stage.show();
         SpaceInvaders.start(stage);
     }
+
 }

@@ -52,11 +52,20 @@ public class ControllerGameOver {
         SpaceInvaders.objectSpeed = 2.5;
         SpaceInvaders.shotReloadSpeed = 20;
         SpaceInvaders.objectReloadSpeed = 50;
+        SpaceInvaders.currentCoin = -1;
+        SpaceInvaders.coinY = -50;
+        for (int i = 0; i < 3; i++) {
+            SpaceInvaders.coinIsCollected.set(i, false);
+        }
     }
 
     @FXML
-    public void changeLevel(ActionEvent event) {
-        //change level
+    public void changeLevel(ActionEvent event) throws IOException {
+        spaceInvader = (Stage) SpaceInvaders.labelScore.getScene().getWindow();
+        spaceInvader.close();
+        gameOver = (Stage) highscore.getScene().getWindow();
+        gameOver.close();
+        resetGame();
     }
 
     public void playAgain(ActionEvent event) throws Exception {
@@ -83,6 +92,7 @@ public class ControllerGameOver {
         gameOver = (Stage) highscore.getScene().getWindow();
         gameOver.close();
         resetGame();
+        ControllerLogin.profileLoaded = false;
         Login.loadScreen("login");
     }
 

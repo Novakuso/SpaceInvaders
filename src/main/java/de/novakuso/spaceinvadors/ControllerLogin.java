@@ -2,6 +2,7 @@ package de.novakuso.spaceinvadors;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -12,6 +13,7 @@ import java.io.IOException;
 
 public class ControllerLogin extends SpaceInvaders {
 
+    public static ControllerProfile currentProfile;
     @FXML
     public Label labelLogin;
     @FXML
@@ -30,12 +32,28 @@ public class ControllerLogin extends SpaceInvaders {
     public Button buttonSignUp;
     @FXML
     public Button buttonCancel;
+    public static String username;
+    public static boolean profileLoaded = false;
+    public static FXMLLoader loader;
 
 
     @FXML
     void cancel(ActionEvent event) {
         Stage stage = (Stage) labelLogin.getScene().getWindow();
         stage.close();
+    }
+
+    public static void loadProfile(String username) throws IOException {
+
+        if (!profileLoaded) {
+            loader = Login.loadScreen("profile");
+            currentProfile = loader.getController();
+            currentProfile.labelWelcomeBack.setText(String.format("Welcome back %s!", username));
+            profileLoaded = true;
+        } else {
+            currentProfile = loader.getController();
+            currentProfile.labelWelcomeBack.setText(String.format("Welcome back %s!", username));
+        }
     }
 
     @FXML
@@ -49,7 +67,9 @@ public class ControllerLogin extends SpaceInvaders {
             Stage primaryStage = (Stage) wrongCredentials.getScene().getWindow();
             primaryStage.close();
 
-            SpaceInvaders.loadGame();
+            username = textFieldUsername.getText();
+
+            loadProfile(textFieldUsername.getText());
 
         } else {
             System.out.println("Wrong Password or Username");
@@ -59,11 +79,12 @@ public class ControllerLogin extends SpaceInvaders {
         passwordFieldPassword.setText(null);
     }
 
-
     @FXML
     void signUp(ActionEvent event) throws IOException {
         wrongCredentials.setVisible(false);
         Login.loadScreen("newAccount");
+        textFieldUsername.setText(null);
+        passwordFieldPassword.setText(null);
     }
 }
 
