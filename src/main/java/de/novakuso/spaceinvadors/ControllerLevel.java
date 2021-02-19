@@ -42,9 +42,7 @@ public class ControllerLevel {
     public static FXMLLoader setButtonBooleans() throws IOException {
         loader = new FXMLLoader(ControllerLevel.class.getResource("/level.fxml"));
         loader.load();
-
         ControllerLevel controllerLevel = loader.getController();
-
 
         controllerLevel.button1.setDisable(true);
         controllerLevel.button2.setDisable(true);
@@ -67,7 +65,6 @@ public class ControllerLevel {
     }
 
     public static void setUpCoinArrays() {
-
         coinBoolean = new ArrayList<>();
         coinImage = new ArrayList<>();
         coinURL = new ArrayList<>();
@@ -83,81 +80,73 @@ public class ControllerLevel {
         coinURL.add(0, coinNotActivated);
         coinURL.add(1, coinActivated);
 
-        System.out.println("0 " + Login.level1.get(0));
-        System.out.println("1 " + Login.level1.get(1));
-        System.out.println("3 " + Login.level1.get(2));
-        System.out.println("4 " + Login.level2.get(0));
-        System.out.println("5 " + Login.level2.get(1));
-        System.out.println("6 " + Login.level2.get(2));
-        System.out.println("7 " + Login.level3.get(0));
-        System.out.println("8 " + Login.level3.get(1));
-        System.out.println("9 " + Login.level3.get(2));
-        System.out.println("10 " + Login.level4.get(0));
-        System.out.println("11 " + Login.level4.get(1));
-        System.out.println("12 " + Login.level4.get(2));
-
-        coinBoolean.set(0, Login.level1.get(0));
-        coinBoolean.set(1, Login.level1.get(1));
-        coinBoolean.set(2, Login.level1.get(2));
-        coinBoolean.set(3, Login.level2.get(0));
-        coinBoolean.set(4, Login.level2.get(1));
-        coinBoolean.set(5, Login.level2.get(2));
-        coinBoolean.set(6, Login.level3.get(0));
-        coinBoolean.set(7, Login.level3.get(1));
-        coinBoolean.set(8, Login.level3.get(2));
-        coinBoolean.set(9, Login.level4.get(0));
-        coinBoolean.set(10, Login.level4.get(1));
-        coinBoolean.set(11, Login.level4.get(2));
-
         for (int i = 0; i < coinBoolean.size(); i++) {
-            if (i < 3) {
-                coinX.set(i, i * 50.0 + 100);
-            }
-            if (i >= 3 && i < 6) {
-                coinX.set(i, i * 50.0 - 50);
-            }
-            if (i >= 6 && i < 9) {
-                coinX.set(i, i * 50 - 200.0);
-            }
-            if (i >= 9) {
-                coinX.set(i, i * 50 - 350.0);
-            }
-        }
-        for (int i = 0; i < coinBoolean.size(); i++) {
-            if (i < 3) {
-                coinY.set(i, 125.0);
-            }
-            if (i >= 3 && i < 6) {
-                coinY.set(i, 200.0);
-            }
-            if (i >= 6 && i < 9) {
-                coinY.set(i, 275.);
-            }
-            if (i >= 9) {
-                coinY.set(i, 350.0);
-            }
-        }
-
-        for (int i = 0; i < 12; i++) {
+            coinBoolean.set(i, getLevel(i).get(i % 3));
+            coinX.set(i, i * 50.0 + getXZahl(i));
+            coinY.set(i, getYZahl(i));
             if (coinBoolean.get(i)) {
                 coinImage.set(i, coinURL.get(1));
-                System.out.println("1");
             }
             if (!coinBoolean.get(i)) {
                 coinImage.set(i, coinURL.get(0));
-                System.out.println("0");
             }
         }
+    }
 
+    public static List<Boolean> getLevel(int i) {
+        List<Boolean> lev = null;
+        if (i < 3) {
+            lev = Login.level1;
+        }
+        if (i >= 3 && i < 6) {
+            lev = Login.level2;
+        }
+        if (i >= 6 && i < 9) {
+            lev = Login.level3;
+        }
+        if (i >= 9) {
+            lev = Login.level4;
+        }
+        return lev;
+    }
+
+    public static double getXZahl(int i) {
+        Double zahl = null;
+        if (i < 3) {
+            zahl = 100.0;
+        }
+        if (i >= 3 && i < 6) {
+            zahl = -50.0;
+        }
+        if (i >= 6 && i < 9) {
+            zahl = -200.0;
+        }
+        if (i >= 9) {
+            zahl = -350.0;
+        }
+        return zahl;
+    }
+
+    public static double getYZahl(int i) {
+        Double zahl = null;
+        if (i < 3) {
+            zahl = 125.0;
+        }
+        if (i >= 3 && i < 6) {
+            zahl = 200.0;
+        }
+        if (i >= 6 && i < 9) {
+            zahl = 275.0;
+        }
+        if (i >= 9) {
+            zahl = 350.0;
+        }
+        return zahl;
     }
 
     public static Pane drawCoins() throws IOException {
-        FXMLLoader loader = new FXMLLoader(ControllerLevel.class.getResource("/level.fxml"));
-        //Pane pane = loader.load();
-        //ControllerLevel controllerLevel = loader.getController();
-
+        FXMLLoader loader;
         loader = ControllerLevel.setButtonBooleans();
-
         ControllerLevel controllerLevel = loader.getController();
 
         for (int i = 0; i < coinBoolean.size(); i++) {

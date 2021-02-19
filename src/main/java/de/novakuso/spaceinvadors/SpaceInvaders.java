@@ -19,6 +19,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -81,6 +82,8 @@ public class SpaceInvaders {
     public static double coinY = -60;
     public static boolean coinIsSpawned = false;
     public static int currentCoin = -1;
+    static String coinString;
+    static PreparedStatement psCoins;
 
     static Label labelScore = new Label();
     static List<Boolean> eventInputs;
@@ -103,7 +106,6 @@ public class SpaceInvaders {
     static List<Boolean> lifeIsUsed;
 
     static List<Boolean> coinIsCollected;
-
 
     //setup arrays
     public static void setupArrays() {
@@ -432,22 +434,16 @@ public class SpaceInvaders {
     static String levelString;
 
     //spawn coins
-    public static boolean spawnCoin() {
-        //System.out.println("spawn");
+    public static void spawnCoin() {
         coinX = RANDOM.nextDouble(WIDTH - coinImage.getRequestedWidth());
         coinY = 1;
         coinIsSpawned = true;
-        return true;
     }
 
     //move coins
     public static void moveCoin() {
         coinY = coinY + 1.3;
-        //System.out.println("move");
     }
-
-    static String coinString;
-    static PreparedStatement psCoins;
 
     //main clock
     public static void tick(GraphicsContext gc) throws InterruptedException, IOException, SQLException {
@@ -505,7 +501,6 @@ public class SpaceInvaders {
 
     //check coins
     public static void checkCoin() {
-        //System.out.println("check");
         if (coinY > HEIGHT) {
             coinIsSpawned = false;
         }
@@ -514,9 +509,7 @@ public class SpaceInvaders {
                     && shotX.get(j) + shotImages.get(0).getRequestedWidth() > coinX && shotX.get(j) + shotImages.get(0).getRequestedWidth() < coinX + coinImage.getRequestedWidth()) {
                 coinIsCollected.set(currentCoin, true);
                 setCoinsArrays(level, coinIsCollected);
-                checkCoins(level);
-                //System.out.println("currentCoin " + currentCoin + " coinIsCollected " + coinIsCollected.get(currentCoin));
-
+                setLevelsWithCoins(level);
                 coinIsSpawned = false;
             }
         }
@@ -526,24 +519,20 @@ public class SpaceInvaders {
         for (int i = 0; i < 3; i++) {
             if (level == 1 && (Boolean) coins.get(i)) {
                 Login.level1.set(i, (Boolean) coins.get(i));
-                System.out.println(i + 1 + " level1 " + Login.level1.get(i));
             }
             if (level == 2 && (Boolean) coins.get(i)) {
                 Login.level2.set(i, (Boolean) coins.get(i));
-                System.out.println(i + 1 + " level2 " + Login.level2.get(i));
             }
             if (level == 3 && (Boolean) coins.get(i)) {
                 Login.level3.set(i, (Boolean) coins.get(i));
-                System.out.println(i + 1 + " level3 " + Login.level3.get(i));
             }
             if (level == 4 && (Boolean) coins.get(i)) {
                 Login.level4.set(i, (Boolean) coins.get(i));
-                System.out.println(i + 1 + " level4 " + Login.level4.get(i));
             }
         }
     }
 
-    public static void checkCoins(int level) {
+    public static void setLevelsWithCoins(int level) {
         if (level == 1) {
             if (Login.level1.get(0) && Login.level1.get(1) && Login.level1.get(2)) {
                 Login.levels.set(1, true);
@@ -561,12 +550,13 @@ public class SpaceInvaders {
         }
         if (level == 4) {
             if (Login.level4.get(0) && Login.level4.get(1) && Login.level4.get(2)) {
-                //Login.levels.set(4, true);
                 System.out.println("durchgespielt");
+                //beat the game
             }
         }
     }
 
+    //update levels in database
     public static void updateLevelsDatabase() throws SQLException {
         levelString = "UPDATE levels SET level1=" + Login.levels.get(0) + ", level2=" + Login.levels.get(1) + "," +
                 " level3=" + Login.levels.get(2) + ", level4=" + Login.levels.get(3) + " WHERE" +
@@ -579,25 +569,21 @@ public class SpaceInvaders {
                 coinString = "UPDATE level1 SET coin1=" + Login.level1.get(0) + ", coin2=" + Login.level1.get(1) + ", coin3=" + Login.level1.get(2) + " WHERE id=" + Login.id;
                 psCoins = databaseConnection.prepareStatement(coinString);
                 psCoins.executeUpdate();
-                System.out.println("1");
             }
             if (l == 2) {
                 coinString = "UPDATE level2 SET coin1=" + Login.level2.get(0) + ", coin2=" + Login.level2.get(1) + ", coin3=" + Login.level2.get(2) + " WHERE id=" + Login.id;
                 psCoins = databaseConnection.prepareStatement(coinString);
                 psCoins.executeUpdate();
-                System.out.println("2");
             }
             if (l == 3) {
                 coinString = "UPDATE level3 SET coin1=" + Login.level3.get(0) + ", coin2=" + Login.level3.get(1) + ", coin3=" + Login.level3.get(2) + " WHERE id=" + Login.id;
                 psCoins = databaseConnection.prepareStatement(coinString);
                 psCoins.executeUpdate();
-                System.out.println("3");
             }
             if (l == 4) {
                 coinString = "UPDATE level4 SET coin1=" + Login.level4.get(0) + ", coin2=" + Login.level4.get(1) + ", coin3=" + Login.level4.get(2) + " WHERE id=" + Login.id;
                 psCoins = databaseConnection.prepareStatement(coinString);
                 psCoins.executeUpdate();
-                System.out.println("4");
             }
         }
     }
@@ -633,7 +619,6 @@ public class SpaceInvaders {
     public static void drawImages(GraphicsContext gc) throws IOException, SQLException {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         gc.drawImage(player, playerX, playerY);
-
 
         for (int i = 0; i < maxLives; i++) {
             if (lifeIsUsed.get(i)) {
@@ -744,53 +729,42 @@ public class SpaceInvaders {
     public static void readJson() {
         try {
             List<Object> data = Util.JSON_LIST_ADAPTER.fromJson(readResource("/levels.json"));
+            assert data != null;
             for (Object object : data) {
 
                 Level level = Util.LEVEL_ADAPTER.fromJsonValue(object);
                 System.out.println(level);
 
-
                 assert level != null;
-                if (data.indexOf(object) == 0) {
-                    Level.level0.put("maxObjects", level.getMaxObjects());
-                    Level.level0.put("maxShots", level.getMaxShots());
-                    Level.level0.put("objectSpeed", level.getObjectSpeed());
-                    Level.level0.put("shotSpeed", level.getShotSpeed());
-                    Level.level0.put("objectReloadSpeed", level.getObjectReloadSpeed());
-                    Level.level0.put("shotReloadSpeed", level.getShotReloadSpeed());
-                }
-
-                if (data.indexOf(object) == 1) {
-                    Level.level1.put("maxObjects", level.getMaxObjects());
-                    Level.level1.put("maxShots", level.getMaxShots());
-                    Level.level1.put("objectSpeed", level.getObjectSpeed());
-                    Level.level1.put("shotSpeed", level.getShotSpeed());
-                    Level.level1.put("objectReloadSpeed", level.getObjectReloadSpeed());
-                    Level.level1.put("shotReloadSpeed", level.getShotReloadSpeed());
-                }
-
-                if (data.indexOf(object) == 2) {
-                    Level.level2.put("maxObjects", level.getMaxObjects());
-                    Level.level2.put("maxShots", level.getMaxShots());
-                    Level.level2.put("objectSpeed", level.getObjectSpeed());
-                    Level.level2.put("shotSpeed", level.getShotSpeed());
-                    Level.level2.put("objectReloadSpeed", level.getObjectReloadSpeed());
-                    Level.level2.put("shotReloadSpeed", level.getShotReloadSpeed());
-                }
-
-                if (data.indexOf(object) == 3) {
-                    Level.level3.put("maxObjects", level.getMaxObjects());
-                    Level.level3.put("maxShots", level.getMaxShots());
-                    Level.level3.put("objectSpeed", level.getObjectSpeed());
-                    Level.level3.put("shotSpeed", level.getShotSpeed());
-                    Level.level3.put("objectReloadSpeed", level.getObjectReloadSpeed());
-                    Level.level3.put("shotReloadSpeed", level.getShotReloadSpeed());
-                }
+                HashMap<String, Double> lev = getLevel(data.indexOf(object));
+                lev.put("maxObjects", level.getMaxObjects());
+                lev.put("maxShots", level.getMaxShots());
+                lev.put("objectSpeed", level.getObjectSpeed());
+                lev.put("shotSpeed", level.getShotSpeed());
+                lev.put("objectReloadSpeed", level.getObjectReloadSpeed());
+                lev.put("shotReloadSpeed", level.getShotReloadSpeed());
             }
             loadLevels(0);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static HashMap<String, Double> getLevel(int index) {
+        HashMap<String, Double> level = null;
+        if (index == 0) {
+            level = Level.level0;
+        }
+        if (index == 1) {
+            level = Level.level1;
+        }
+        if (index == 2) {
+            level = Level.level2;
+        }
+        if (index == 3) {
+            level = Level.level3;
+        }
+        return level;
     }
 
     public static void loadLevels(int level) {
@@ -826,5 +800,4 @@ public class SpaceInvaders {
         SpaceInvaders.start(stage);
         databaseConnection = DriverManager.getConnection("jdbc:mysql://" + Configuration.MYSQL_HOST + ":" + Configuration.MYSQL_PORT + "/" + Configuration.MYSQL_DATABASE + "?serverTimezone=UTC", Configuration.MYSQL_USERNAME, Configuration.MYSQL_PASSWORD);
     }
-
 }

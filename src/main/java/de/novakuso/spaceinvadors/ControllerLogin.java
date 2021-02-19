@@ -44,7 +44,6 @@ public class ControllerLogin extends SpaceInvaders {
     }
 
     public static void loadProfile(String username) throws IOException {
-
         if (!profileLoaded) {
             loader = Login.loadScreen("profile");
             currentProfile = loader.getController();
@@ -58,18 +57,14 @@ public class ControllerLogin extends SpaceInvaders {
 
     @FXML
     void login(ActionEvent event) throws Exception {
-
-        System.out.println();
-
         if (Login.checkCredentials(textFieldUsername.getText(), passwordFieldPassword.getText())) {
             System.out.println("checked credentials");
-            int id = Login.loadLevelsFromDatabase(textFieldUsername.getText(), passwordFieldPassword.getText());
+            Login.loadLevelsFromDatabase(textFieldUsername.getText(), passwordFieldPassword.getText());
 
             Stage primaryStage = (Stage) wrongCredentials.getScene().getWindow();
             primaryStage.close();
 
             username = textFieldUsername.getText();
-
             loadProfile(textFieldUsername.getText());
 
         } else {

@@ -13,9 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ControllerProfile {
-
-    @FXML
-    public static Label huso;
+    Pane root;
     public Stage level;
     @FXML
     public VBox vBox;
@@ -35,8 +33,6 @@ public class ControllerProfile {
     public Button buttonExit;
     @FXML
     public Label labelWelcomeBack;
-    Pane root;
-    Pane root1;
     @FXML
     private BorderPane borderPane;
 
@@ -47,17 +43,15 @@ public class ControllerProfile {
 
     @FXML
     public void level(ActionEvent event) throws IOException {
-        //FXMLLoader controllerLevel = ControllerLevel.setButtonBooleans();
         ControllerLevel.setUpCoinArrays();
-        //root = controllerLevel.getRoot();
         root = ControllerLevel.drawCoins();
         borderPane.setCenter(root);
     }
 
     @FXML
     public void edit(ActionEvent event) throws IOException {
-        root1 = FXMLLoader.load(ControllerProfile.class.getResource("/edit.fxml"));
-        borderPane.setCenter(root1);
+        root = FXMLLoader.load(ControllerProfile.class.getResource("/edit.fxml"));
+        borderPane.setCenter(root);
     }
 
     @FXML
@@ -71,7 +65,7 @@ public class ControllerProfile {
         level = (Stage) buttonLogout.getScene().getWindow();
         level.close();
         ControllerLogin.profileLoaded = false;
-        FXMLLoader loader = Login.loadScreen("login");
+        Login.loadScreen("login");
     }
 
     @FXML

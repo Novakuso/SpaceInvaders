@@ -2,7 +2,6 @@ package de.novakuso.spaceinvadors;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -102,17 +101,15 @@ public class ControllerEdit {
     @FXML
     public void apply(ActionEvent event) throws IOException {
         if (currentMode.equals("Edit")) {
-            System.out.println("Edit");
             editAccount(ControllerLogin.username, textFieldUsername.getText(), passwordFieldPasswordOld.getText(), passwordFieldPasswordNew.getText());
         } else if (currentMode.equals("Delete")) {
             deleteAccount(ControllerLogin.username, passwordFieldPasswordOld.getText());
-            System.out.println("Delete");
 
             //logout
             level = (Stage) buttonApply.getScene().getWindow();
             level.close();
             ControllerLogin.profileLoaded = false;
-            FXMLLoader loader = Login.loadScreen("login");
+            Login.loadScreen("login");
         }
     }
 

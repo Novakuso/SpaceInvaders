@@ -48,7 +48,6 @@ public class ControllerNewAccount {
                 st.executeUpdate(sql);
                 System.out.println("Coin value added successfully to level " + i);
             }
-
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
