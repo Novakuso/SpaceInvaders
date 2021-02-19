@@ -6,40 +6,40 @@
 <Pane xmlns:fx="http://javafx.com/fxml/1" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
       minWidth="-Infinity" prefHeight="550.0" prefWidth="275.0" style="-fx-background-color: #242528;"
       xmlns="http://javafx.com/javafx/11.0.1" fx:controller="de.novakuso.spaceinvadors.ControllerLevel">
-   <children>
-      <Label fx:id="labelLevel" alignment="CENTER" layoutX="100.0" layoutY="14.0" prefHeight="58.0" prefWidth="106.0"
-             style="-fx-border-color: #bc2626; -fx-border-width: 2px 2px 2px 2px;" text="Level" textFill="#bc2626">
-         <font>
-            <Font size="40.0"/>
-         </font>
-      </Label>
-      <Button fx:id="button1" alignment="CENTER" layoutX="50.0" layoutY="125.0" mnemonicParsing="false"
-              onAction="#level1" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #bc2626;" text="1"
-              textFill="#242528">
-         <font>
-            <Font size="15.0"/>
-         </font>
-      </Button>
-      <Button fx:id="button2" alignment="CENTER" layoutX="50.0" layoutY="200.0" mnemonicParsing="false"
-              onAction="#level2" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #bc2626;" text="2"
-              textFill="#242528">
-         <font>
-            <Font size="15.0"/>
-         </font>
-      </Button>
-      <Button fx:id="button3" alignment="CENTER" layoutX="50.0" layoutY="275.0" mnemonicParsing="false"
-              onAction="#level3" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #bc2626;" text="3"
-              textFill="#242528">
-         <font>
-            <Font size="15.0"/>
-         </font>
-      </Button>
-      <Button fx:id="button4" alignment="CENTER" layoutX="50.0" layoutY="350.0" mnemonicParsing="false"
-              onAction="#level4" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #bc2626;" text="4"
-              textFill="#242528">
-         <font>
-            <Font size="15.0"/>
-         </font>
-      </Button>
+    <children>
+        <Label fx:id="labelLevel" alignment="CENTER" layoutX="100.0" layoutY="14.0" prefHeight="58.0" prefWidth="106.0"
+               style="-fx-border-color: #bc2626; -fx-border-width: 2px 2px 2px 2px;" text="Level" textFill="#bc2626">
+            <font>
+                <Font size="40.0"/>
+            </font>
+        </Label>
+        <Button fx:id="button1" alignment="CENTER" layoutX="45.0" layoutY="125.0" mnemonicParsing="false"
+                onAction="#level1" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #bc2626;" text="1"
+                textFill="#242528">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </Button>
+        <Button fx:id="button2" alignment="CENTER" layoutX="45.0" layoutY="200.0" mnemonicParsing="false"
+                onAction="#level2" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #bc2626;" text="2"
+                textFill="#242528">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </Button>
+        <Button fx:id="button3" alignment="CENTER" layoutX="45.0" layoutY="275.0" mnemonicParsing="false"
+                onAction="#level3" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #bc2626;" text="3"
+                textFill="#242528">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </Button>
+        <Button fx:id="button4" alignment="CENTER" layoutX="45.0" layoutY="350.0" mnemonicParsing="false"
+                onAction="#level4" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #bc2626;" text="4"
+                textFill="#242528">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </Button>
    </children>
 </Pane>

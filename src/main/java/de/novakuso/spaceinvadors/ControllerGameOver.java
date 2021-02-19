@@ -2,6 +2,7 @@ package de.novakuso.spaceinvadors;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -53,7 +54,8 @@ public class ControllerGameOver {
         SpaceInvaders.shotReloadSpeed = 20;
         SpaceInvaders.objectReloadSpeed = 50;
         SpaceInvaders.currentCoin = -1;
-        SpaceInvaders.coinY = -50;
+        SpaceInvaders.coinY = -60;
+        SpaceInvaders.coinIsSpawned = false;
         for (int i = 0; i < 3; i++) {
             SpaceInvaders.coinIsCollected.set(i, false);
         }
@@ -65,6 +67,9 @@ public class ControllerGameOver {
         spaceInvader.close();
         gameOver = (Stage) highscore.getScene().getWindow();
         gameOver.close();
+        FXMLLoader loader = Login.loadScreen("profile");
+        ControllerProfile currentProfile = loader.getController();
+        currentProfile.labelWelcomeBack.setText(String.format("Welcome back %s!", ControllerLogin.username));
         resetGame();
     }
 

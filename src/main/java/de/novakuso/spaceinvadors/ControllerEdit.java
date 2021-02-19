@@ -74,6 +74,13 @@ public class ControllerEdit {
                 preparedStatement.setString(1, String.valueOf(username));
                 preparedStatement.setString(2, String.valueOf(password));
                 preparedStatement.executeUpdate();
+
+                preparedStatement = databaseConnection.prepareStatement("DELETE FROM levels WHERE id=" + Login.id);
+                preparedStatement.executeUpdate();
+                for (int i = 1; i < 5; i++) {
+                    preparedStatement = databaseConnection.prepareStatement("DELETE FROM level" + i + " WHERE id=" + Login.id);
+                    preparedStatement.executeUpdate();
+                }
                 System.out.println("Account deleted successfully");
 
             } catch (SQLException sqlException) {

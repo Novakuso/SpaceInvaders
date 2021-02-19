@@ -14,6 +14,10 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -152,7 +156,6 @@ public class SpaceInvaders {
         }
         for (int i = 0; i < 3; i++) {
             coinIsCollected.add(i, null);
-            System.out.println(coinIsCollected.size());
         }
     }
 
@@ -183,7 +186,6 @@ public class SpaceInvaders {
         }
         for (int i = 0; i < 3; i++) {
             coinIsCollected.set(i, false);
-            System.out.println(i + " " + coinIsCollected.size());
         }
     }
 
@@ -266,14 +268,7 @@ public class SpaceInvaders {
         });
     }
 
-    //main clock
-    public static void tick(GraphicsContext gc) throws InterruptedException, IOException {
-        if (!gameIsPaused() && !gameIsOver) {
-            checkPlayerIfBorder();
-            movePlayer();
-            drawImages(gc);
-        }
-    }
+    public static Connection databaseConnection;
 
     public static boolean gameIsPaused() {
         return eventInputs.get(6);
@@ -434,8 +429,37 @@ public class SpaceInvaders {
         }
     }
 
+    static String levelString;
+
+    //spawn coins
+    public static boolean spawnCoin() {
+        //System.out.println("spawn");
+        coinX = RANDOM.nextDouble(WIDTH - coinImage.getRequestedWidth());
+        coinY = 1;
+        coinIsSpawned = true;
+        return true;
+    }
+
+    //move coins
+    public static void moveCoin() {
+        coinY = coinY + 1.3;
+        //System.out.println("move");
+    }
+
+    static String coinString;
+    static PreparedStatement psCoins;
+
+    //main clock
+    public static void tick(GraphicsContext gc) throws InterruptedException, IOException, SQLException {
+        if (!gameIsPaused() && !gameIsOver) {
+            checkPlayerIfBorder();
+            movePlayer();
+            drawImages(gc);
+        }
+    }
+
     //check objects
-    public static void checkObjects() throws IOException {
+    public static void checkObjects() throws IOException, SQLException {
         if (countObjects()) {
             objectCanSpawn = true;
         }
@@ -479,21 +503,6 @@ public class SpaceInvaders {
         }
     }
 
-    //spawn coins
-    public static boolean spawnCoin() {
-        //System.out.println("spawn");
-        coinX = RANDOM.nextDouble(WIDTH - coinImage.getRequestedWidth());
-        coinY = 1;
-        coinIsSpawned = true;
-        return true;
-    }
-
-    //move coins
-    public static void moveCoin() {
-        coinY = coinY + 1.3;
-        //System.out.println("move");
-    }
-
     //check coins
     public static void checkCoin() {
         //System.out.println("check");
@@ -504,17 +513,97 @@ public class SpaceInvaders {
             if (shotX.get(j) > coinX && shotX.get(j) < coinX + objectImages.get(0).getRequestedWidth() && shotY.get(j) < coinY + coinImage.getRequestedHeight() && shotY.get(j) > coinY
                     && shotX.get(j) + shotImages.get(0).getRequestedWidth() > coinX && shotX.get(j) + shotImages.get(0).getRequestedWidth() < coinX + coinImage.getRequestedWidth()) {
                 coinIsCollected.set(currentCoin, true);
-                System.out.println("currentCoin " + currentCoin + " coinIsCollected " + coinIsCollected.get(currentCoin));
-                for (int i = 0; i < coinIsCollected.size(); i++) {
-                    System.out.println("i " + i + " coinIsCollected " + coinIsCollected.get(i) + " currentCoin " + currentCoin);
-                }
+                setCoinsArrays(level, coinIsCollected);
+                checkCoins(level);
+                //System.out.println("currentCoin " + currentCoin + " coinIsCollected " + coinIsCollected.get(currentCoin));
+
                 coinIsSpawned = false;
             }
         }
     }
 
+    public static void setCoinsArrays(int level, List coins) {
+        for (int i = 0; i < 3; i++) {
+            if (level == 1 && (Boolean) coins.get(i)) {
+                Login.level1.set(i, (Boolean) coins.get(i));
+                System.out.println(i + 1 + " level1 " + Login.level1.get(i));
+            }
+            if (level == 2 && (Boolean) coins.get(i)) {
+                Login.level2.set(i, (Boolean) coins.get(i));
+                System.out.println(i + 1 + " level2 " + Login.level2.get(i));
+            }
+            if (level == 3 && (Boolean) coins.get(i)) {
+                Login.level3.set(i, (Boolean) coins.get(i));
+                System.out.println(i + 1 + " level3 " + Login.level3.get(i));
+            }
+            if (level == 4 && (Boolean) coins.get(i)) {
+                Login.level4.set(i, (Boolean) coins.get(i));
+                System.out.println(i + 1 + " level4 " + Login.level4.get(i));
+            }
+        }
+    }
+
+    public static void checkCoins(int level) {
+        if (level == 1) {
+            if (Login.level1.get(0) && Login.level1.get(1) && Login.level1.get(2)) {
+                Login.levels.set(1, true);
+            }
+        }
+        if (level == 2) {
+            if (Login.level2.get(0) && Login.level2.get(1) && Login.level2.get(2)) {
+                Login.levels.set(2, true);
+            }
+        }
+        if (level == 3) {
+            if (Login.level3.get(0) && Login.level3.get(1) && Login.level3.get(2)) {
+                Login.levels.set(3, true);
+            }
+        }
+        if (level == 4) {
+            if (Login.level4.get(0) && Login.level4.get(1) && Login.level4.get(2)) {
+                //Login.levels.set(4, true);
+                System.out.println("durchgespielt");
+            }
+        }
+    }
+
+    public static void updateLevelsDatabase() throws SQLException {
+        levelString = "UPDATE levels SET level1=" + Login.levels.get(0) + ", level2=" + Login.levels.get(1) + "," +
+                " level3=" + Login.levels.get(2) + ", level4=" + Login.levels.get(3) + " WHERE" +
+                " id=" + Login.id;
+        PreparedStatement preparedStatement = databaseConnection.prepareStatement(levelString);
+        preparedStatement.executeUpdate();
+        System.out.println("Levels updated successfully");
+        for (int l = 1; l < 5; l++) {
+            if (l == 1) {
+                coinString = "UPDATE level1 SET coin1=" + Login.level1.get(0) + ", coin2=" + Login.level1.get(1) + ", coin3=" + Login.level1.get(2) + " WHERE id=" + Login.id;
+                psCoins = databaseConnection.prepareStatement(coinString);
+                psCoins.executeUpdate();
+                System.out.println("1");
+            }
+            if (l == 2) {
+                coinString = "UPDATE level2 SET coin1=" + Login.level2.get(0) + ", coin2=" + Login.level2.get(1) + ", coin3=" + Login.level2.get(2) + " WHERE id=" + Login.id;
+                psCoins = databaseConnection.prepareStatement(coinString);
+                psCoins.executeUpdate();
+                System.out.println("2");
+            }
+            if (l == 3) {
+                coinString = "UPDATE level3 SET coin1=" + Login.level3.get(0) + ", coin2=" + Login.level3.get(1) + ", coin3=" + Login.level3.get(2) + " WHERE id=" + Login.id;
+                psCoins = databaseConnection.prepareStatement(coinString);
+                psCoins.executeUpdate();
+                System.out.println("3");
+            }
+            if (l == 4) {
+                coinString = "UPDATE level4 SET coin1=" + Login.level4.get(0) + ", coin2=" + Login.level4.get(1) + ", coin3=" + Login.level4.get(2) + " WHERE id=" + Login.id;
+                psCoins = databaseConnection.prepareStatement(coinString);
+                psCoins.executeUpdate();
+                System.out.println("4");
+            }
+        }
+    }
+
     //remove lives
-    public static void removeLife() throws IOException {
+    public static void removeLife() throws IOException, SQLException {
         if (lifeToRemove <= 0) {
             lifeIsUsed.set(0, false);
             drawImages(gc);
@@ -528,7 +617,8 @@ public class SpaceInvaders {
     }
 
     //load game over screen
-    public static void gameOver() throws IOException {
+    public static void gameOver() throws IOException, SQLException {
+        updateLevelsDatabase();
         System.out.println("game over");
         labelScore.setText("Score: 0");
         FXMLLoader loader = Login.loadScreen("gameOver");
@@ -540,7 +630,7 @@ public class SpaceInvaders {
     }
 
     //draw all images
-    public static void drawImages(GraphicsContext gc) throws IOException {
+    public static void drawImages(GraphicsContext gc) throws IOException, SQLException {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         gc.drawImage(player, playerX, playerY);
 
@@ -614,7 +704,7 @@ public class SpaceInvaders {
                     last_tick = now;
                     try {
                         tick(gc);
-                    } catch (InterruptedException | IOException e) {
+                    } catch (InterruptedException | IOException | SQLException e) {
                         e.printStackTrace();
                     }
                     return;
@@ -623,7 +713,7 @@ public class SpaceInvaders {
                     last_tick = now;
                     try {
                         tick(gc);
-                    } catch (InterruptedException | IOException e) {
+                    } catch (InterruptedException | IOException | SQLException e) {
                         e.printStackTrace();
                     }
                 }
@@ -734,6 +824,7 @@ public class SpaceInvaders {
         stage.setScene(scene);
         stage.show();
         SpaceInvaders.start(stage);
+        databaseConnection = DriverManager.getConnection("jdbc:mysql://" + Configuration.MYSQL_HOST + ":" + Configuration.MYSQL_PORT + "/" + Configuration.MYSQL_DATABASE + "?serverTimezone=UTC", Configuration.MYSQL_USERNAME, Configuration.MYSQL_PASSWORD);
     }
 
 }

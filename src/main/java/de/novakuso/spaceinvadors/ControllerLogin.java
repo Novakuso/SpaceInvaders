@@ -63,6 +63,7 @@ public class ControllerLogin extends SpaceInvaders {
 
         if (Login.checkCredentials(textFieldUsername.getText(), passwordFieldPassword.getText())) {
             System.out.println("checked credentials");
+            int id = Login.loadLevelsFromDatabase(textFieldUsername.getText(), passwordFieldPassword.getText());
 
             Stage primaryStage = (Stage) wrongCredentials.getScene().getWindow();
             primaryStage.close();

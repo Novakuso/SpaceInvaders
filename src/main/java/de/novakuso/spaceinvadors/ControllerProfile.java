@@ -36,6 +36,7 @@ public class ControllerProfile {
     @FXML
     public Label labelWelcomeBack;
     Pane root;
+    Pane root1;
     @FXML
     private BorderPane borderPane;
 
@@ -46,14 +47,17 @@ public class ControllerProfile {
 
     @FXML
     public void level(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(ControllerProfile.class.getResource("/level.fxml"));
+        //FXMLLoader controllerLevel = ControllerLevel.setButtonBooleans();
+        ControllerLevel.setUpCoinArrays();
+        //root = controllerLevel.getRoot();
+        root = ControllerLevel.drawCoins();
         borderPane.setCenter(root);
     }
 
     @FXML
     public void edit(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(ControllerProfile.class.getResource("/edit.fxml"));
-        borderPane.setCenter(root);
+        root1 = FXMLLoader.load(ControllerProfile.class.getResource("/edit.fxml"));
+        borderPane.setCenter(root1);
     }
 
     @FXML

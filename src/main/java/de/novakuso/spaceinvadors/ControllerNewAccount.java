@@ -40,6 +40,14 @@ public class ControllerNewAccount {
             String sql = "INSERT INTO  `users` (username, password) VALUES ('" + username + "', \"" + password + "\");";
             st.executeUpdate(sql);
             System.out.println("Account created successfully");
+            sql = "INSERT INTO `levels` (level1, level2, level3, level4) VALUES (true, false, false, false)";
+            st.executeUpdate(sql);
+            System.out.println("Levels added successfully");
+            for (int i = 1; i < 5; i++) {
+                sql = "INSERT INTO `level" + i + "` (coin1, coin2, coin3) VALUES (false, false, false)";
+                st.executeUpdate(sql);
+                System.out.println("Coin value added successfully to level " + i);
+            }
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
